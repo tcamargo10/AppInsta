@@ -8,6 +8,47 @@ class Lista extends Component{
         this.state = {
             feed: this.props.data
         }
+
+        this.mostralikes = this.mostralikes.bind(this);
+        this.like = this.like.bind(this);
+        this.carregaicone = this.carregaicone.bind(this);
+    }
+
+    carregaicone(likeada){
+       return likeada ? require('../img/likeada.png') : require('../img/like.png')
+    }
+
+    like(){
+        let feed = this.state.feed;
+
+        if(this.state.feed.likeada){
+            this.setState({
+                feed: {
+                    ...feed,
+                    likers: feed.likers - 1,
+                    likeada: !feed.likeada                }
+            });
+        }else {
+            this.setState({
+                feed: {
+                    ...feed,
+                    likers: feed.likers + 1,
+                    likeada: !feed.likeada
+                }
+            })
+        }
+    }
+
+    mostralikes(likers){
+        let feed = this.state.feed;
+
+        if(feed.likers <= 0){
+            return;
+        }
+
+        return(
+        <Text style={styles.likes}> {feed.likers} {feed.likers > 1 ? 'curtidas' : 'curtida'} </Text>
+        );
     }
 
     render(){
@@ -32,10 +73,10 @@ class Lista extends Component{
                 </View>
 
                 <View style={styles.areabtn}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.like}>
                         <Image
                         style={styles.icones}
-                        source={require('../img/like.png')}
+                        source={this.carregaicone(this.state.feed.likeada)}
                         />
                     </TouchableOpacity>
 
@@ -47,6 +88,7 @@ class Lista extends Component{
                     </TouchableOpacity>
                 </View>
 
+                {this.mostralikes(this.state.feed.likers)}
 
                 <View style={styles.viewrodape}>
                     <Text style={styles.nomerodape}> {this.state.feed.nome} </Text>
@@ -61,6 +103,9 @@ class Lista extends Component{
 export default Lista;
 
 const styles = StyleSheet.create({
+    areafeed: {
+        marginBottom: 20,
+    },
     nomeusuario: {
         fontSize: 22,
         textAlign: 'left',
@@ -108,4 +153,8 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingLeft: 5,
     },
+    likes: {
+        fontWeight: 'bold',
+        marginLeft: 5,
+    }
 });

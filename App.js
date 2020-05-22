@@ -52,7 +52,7 @@ class App extends Component {
           imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto5.png',
           likeada: false, 
           likers: 32
-        }
+        },
       ]
     }
   }
@@ -73,6 +73,7 @@ class App extends Component {
 
         <View>
           <FlatList
+          keyExtractor={ (item) => item.id}
           showsVerticalScrollIndicator={false}
           data={this.state.feed}
           renderItem={ ({item}) => <Lista data={item}/>}
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 35,
+    marginBottom: 35,
   },
   header: {
     height: 55,
